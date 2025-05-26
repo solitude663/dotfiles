@@ -1,0 +1,19 @@
+configuration {
+	modes: [ combi ];
+    combi-modes: [ drun ];
+}
+
+@theme "gruvbox-dark-soft"
+
+/* Insert theme modifications after this */
+
+entry {
+    placeholder: "";
+	cursor: pointer;
+}
+
+element {
+	orientation: horizontal;
+	children: [ element-icon, element-text ];
+	spacing: 5px;
+}
