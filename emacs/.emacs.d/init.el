@@ -218,6 +218,11 @@
 (use-package magit
   :defer t)
 
+(require 'dired-x)
+(setq dired-listing-switches "-alh")
+(setq dired-mouse-drag-files t)
+(setq-default dired-dwim-target t)
+
 (defun find-project-directory-recursive ()
       "Recursively search for a makefile."
       (interactive)
