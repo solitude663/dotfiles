@@ -293,6 +293,10 @@
   :ensure t
   :hook((prog-mode) . dumb-jump-mode))
 
+(use-package nasm-mode
+  :ensure t
+  :mode "\\.nasm\\'")
+
 (remove-hook 'xref-backend-functions #'etags--xref-backend)
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
