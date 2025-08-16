@@ -19,4 +19,4 @@ eval `keychain --eval --quiet id_ed25519`
 alias ff="fastfetch"
 alias hibernate="systemctl hibernate"
 
-export PATH="/usr/local/texlive/2025/bin/x86_64-linux:$PATH"
+# export PATH="/usr/local/texlive/2025/bin/x86_64-linux:$PATH"

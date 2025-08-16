@@ -152,6 +152,30 @@
 
 (add-hook 'c-mode-common-hook 'anthony-c-hook)
 
+;; ORG Mode Settings
+(defun aj/org-settings()
+  (message "ORG Mode")
+  (word-wrap-whitespace-mode 1)
+  (toggle-truncate-lines -1))
+
+(add-hook 'org-mode-hook 'aj/org-settings)
+
+(use-package denote
+  :ensure t
+  :hook(dired-mode . denote-dired-mode)
+  :bind
+  (("C-c n n" . denote)
+   ("C-c n r" . denote-rename-file)
+   ("C-c n l" . denote-link)
+   ("C-c n b" . denote-backlinks)
+   ("C-c n d" . denote-dired)
+   ("C-c n g" . denote-grep))
+  :config
+  (setq denote-directory (expand-file-name "~/projects/notes/"))
+  (setq denote-known-keywords '("dev" "cyber" "math"))
+  (denote-rename-buffer-mode 1))
+
+
 (use-package auto-complete
   :ensure t)
 
@@ -365,3 +389,4 @@
 ;; Creating new lines
 (global-set-key (kbd "C-o") 'aj/new-line-below-and-move)
 (global-set-key (kbd "C-S-o") 'aj/new-line-above-and-move)
+(put 'narrow-to-region 'disabled nil)
