@@ -59,8 +59,8 @@
 		"menu-actions": {
 			"shutdown": "shutdown now",
 			"reboot": "reboot",
-			"suspend": "hyprlock",
-			"hibernate": "systemctl hibernate",
+			"suspend": "systemctl suspend",
+			/*"hibernate": "systemctl hibernate",*/
 		},
 	}
 }
