@@ -160,37 +160,57 @@
 
 (add-hook 'org-mode-hook 'aj/org-settings)
 
-(use-package denote
+
+;; (use-package corfu
+;;   :init
+;;   (global-corfu-mode))
+;;
+
+
+(defun woman-other-window ()
+  "Invoke `woman` and display the result in another window."
+  (interactive)
+  (switch-to-buffer-other-window "*WoMan*")
+  (call-interactively 'woman))
+
+(global-set-key (kbd "C-c w") 'woman-other-window)
+
+(use-package company
   :ensure t
-  :hook(dired-mode . denote-dired-mode)
-  :bind
-  (("C-c n n" . denote)
-   ("C-c n r" . denote-rename-file)
-   ("C-c n l" . denote-link)
-   ("C-c n b" . denote-backlinks)
-   ("C-c n d" . denote-dired)
-   ("C-c n g" . denote-grep))
+  :init
+  (global-company-mode)
   :config
-  (setq denote-directory (expand-file-name "~/projects/notes/"))
-  (setq denote-known-keywords '("dev" "cyber" "math"))
-  (denote-rename-buffer-mode 1))
+  ;; Disable automatic popups
+  (setq company-idle-delay nil
+        company-minimum-prefix-length 1)  ;; Show number for each completion
+
+  ;; Use 'company-dabbrev' to restrict completions to buffer contents
+  (setq company-backends '(company-dabbrev-code))
+
+  ;; Optional: Limit completion only within the current buffer (no external files)
+  (setq company-dabbrev-other-buffers nil)
+
+  ;; Use M-RET (Alt+Enter) to trigger completion
+  :bind
+  (:map global-map
+        ("M-RET" . company-complete)))
 
 
-(use-package auto-complete
-  :ensure t)
+;; (use-package auto-complete
+;;   :ensure t)
 
-(ac-config-default)
-(setq ac-ignore-case 'smart)
-(setq ac-auto-start nil)
-(global-set-key (kbd "M-<return>") 'auto-complete)
+;; (ac-config-default)
+;; (setq ac-ignore-case 'smart)
+;; (setq ac-auto-start nil)
+;; (global-set-key (kbd "M-<return>") 'auto-complete)
 
-(defun ac-enable-auto-popup()
-  (interactive)
-  (setq ac-auto-start t))
+;; (defun ac-enable-auto-popup()
+;;   (interactive)
+;;   (setq ac-auto-start t))
 
-(defun ac-disable-auto-popup()
-  (interactive)
-  (setq ac-auto-start nil))
+;; (defun ac-disable-auto-popup()
+;;   (interactive)
+;;   (setq ac-auto-start nil))
 
 
 ;; IDO Mode
