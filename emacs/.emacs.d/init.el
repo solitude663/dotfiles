@@ -182,11 +182,11 @@
   :config
   ;; Disable automatic popups
   (setq company-idle-delay nil
-        company-minimum-prefix-length 1)  ;; Show number for each completion
+	company-minimum-prefix-length 1)  ;; Show number for each completion
 
-  ;; Use 'company-dabbrev' to restrict completions to buffer contents
-  (setq company-backends '(company-dabbrev-code))
-
+  ;; Use 'company-dabbrev' to restrict completions to buffer contents  
+  (setq company-backends '(company-dabbrev-code company-files))
+  
   ;; Optional: Limit completion only within the current buffer (no external files)
   (setq company-dabbrev-other-buffers nil)
 
@@ -195,6 +195,17 @@
   (:map global-map
         ("M-RET" . company-complete)))
 
+;; ;; Make sure company is installed
+;; (use-package company
+;;   :ensure t
+;;   :init
+;;   (global-company-mode)     ;; Enable company everywhere
+;;   :config
+;;   ;; How quickly completions pop up
+;;   (setq company-idle-delay 0.2
+;;         company-minimum-prefix-length 1
+;;         company-tooltip-align-annotations t
+;;         company-show-numbers t))
 
 ;; (use-package auto-complete
 ;;   :ensure t)
@@ -260,7 +271,7 @@
 			      ("NOTE" . "Dark Green")))
 
 (use-package magit
-  :defer t)
+  :ensure t)
 
 (require 'dired-x)
 (setq dired-listing-switches "-alh")
@@ -410,3 +421,4 @@
 (global-set-key (kbd "C-o") 'aj/new-line-below-and-move)
 (global-set-key (kbd "C-S-o") 'aj/new-line-above-and-move)
 (put 'narrow-to-region 'disabled nil)
+(put 'upcase-region 'disabled nil)

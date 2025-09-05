@@ -21,4 +21,7 @@ eval `keychain --eval --quiet id_ed25519`
 alias ff="fastfetch"
 alias hibernate="systemctl hibernate"
 
-# export PATH="/usr/local/texlive/2025/bin/x86_64-linux:$PATH"
+export PATH="/home/tonii/texlive/2025/bin/x86_64-linux:$PATH"
+export MANPATH="/home/tonii/texlive/2025/texmf-dist/doc/man:$MANPATH"
+export INFOPATH="/home/tonii/texlive/2025/texmf-dist/doc/info:$INFOPATH"
+export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig:$PKG_CONFIG_PATH"
