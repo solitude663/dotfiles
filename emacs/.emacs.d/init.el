@@ -6,7 +6,7 @@
 (setq custom-file (locate-user-emacs-file "custom-vars.el"))
 (load custom-file 'noerror 'nomessage)
 
-(defvar font-name "Fira Code" "My font choice")
+(defvar font-name "Fira Code Nerd Font" "My font choice")
 (defvar font-size 13.5 "My font size")
 (defvar line-height 0.25 "Space between line")
 

@@ -12,7 +12,7 @@
 @define-color blue-2 #83a598;
 
 * {
-    font-family: "Fira Code", sans-serif;
+    font-family: "Fira Code Nerd Font", sans-serif;
     font-size: 16px;
     color: @fg-color-4;
 
