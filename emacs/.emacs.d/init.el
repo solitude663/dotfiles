@@ -14,6 +14,7 @@
 			    ((eq system-type 'ms-dos) "build.bat")                                 
 			    (t "./build.sh")) "The default script to call to compile")
 
+;; ==================== Basic Emacs Functionality
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
@@ -31,10 +32,12 @@
 
 (setq create-lockfiles nil)
 (setq backup-directory-alist '(("." . "~/.emacs_saves")))
+(setq use-short-answers t)
 
+;; ==================== Packages
 (use-package mood-line
-  :ensure t)
-(mood-line-mode t)
+  :ensure t
+  :init (mood-line-mode t))
 
 (use-package gruvbox-theme 
   :ensure t)
@@ -52,6 +55,7 @@
   :init
   (vertico-mode))
 
+;; ==================== C-Style Formatting
 (c-add-style "aj-cc-style"
              '((c-basic-offset . 4)
                (tab-width . 4)				 
@@ -64,9 +68,9 @@
                                 (brace-list-close  0)
                                 )))
 
-(setq c-default-style   '((java-mode . "aj-cc-style")
-			  (csharp-mode . "aj-cc-style")
-			  (other . "aj-cc-style")))
+(setq c-default-style '((java-mode . "aj-cc-style")
+			(csharp-mode . "aj-cc-style")
+			(other . "aj-cc-style")))
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.hpp\\'" . c++-mode))
@@ -74,7 +78,6 @@
 (defun get-base-file-name()
   "Gets a file name without extension or path"
   (file-name-sans-extension (file-name-nondirectory (buffer-file-name))))
-
 
 (defun anthony-c-hook()
   (defun c/find-corresponding-file ()
@@ -105,7 +108,7 @@
 
   (define-key c++-mode-map [f3] 'c/find-corresponding-file)
   (define-key c++-mode-map [f4] 'c/find-corresponding-file-other-window)
-
+  
   (defun get-char(str i)
     "Gets a character from a string"
     (char-to-string (aref str i)))
@@ -152,20 +155,63 @@
 
 (add-hook 'c-mode-common-hook 'anthony-c-hook)
 
-;; ORG Mode Settings
-(defun aj/org-settings()
-  (message "ORG Mode")
-  (word-wrap-whitespace-mode 1)
-  (toggle-truncate-lines -1))
+;; ==================== Org Mode ====================
+(use-package org
+  :ensure t
+  :pin gnu)
 
-(add-hook 'org-mode-hook 'aj/org-settings)
+(setq org-agenda-files "~/notes")
+(setq org-log-done 'time)
+(setq org-return-follows-link t)
+(setq org-hide-emphasis-markers t)
 
+(setq org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "DONE")))
 
-;; (use-package corfu
-;;   :init
-;;   (global-corfu-mode))
-;;
+(add-hook 'org-mode-hook 'org-indent-mode)
+(add-hook 'org-mode-hook 'visual-line-mode)
 
+(define-key org-mode-map (kbd "C-c <up>") #'org-priority-up)
+(define-key org-mode-map (kbd "C-c <down>") #'org-priority-down)
+
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c p") #'org-insert-link)
+
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+
+(setq org-capture-templates
+      '(
+	("j" "Daily Log" entry (file+datetree "~/notes/daily-log.org")
+	"* %?"
+	:empty-lines 0)
+	("n" "Random Ncotes" entry (file+headline "~/notes/notes.org" "Random Notes")
+	 "** %?"
+	 :empty-lines 0)
+	("p" "Projects" entry (file+headline "~/notes/projects.org" "Projects")
+	 "** %?"
+	 :empty-lines 1)
+      ))
+
+;; ==================== Org Roam ====================
+(use-package org-roam
+  :ensure t)
+
+(setq org-roam-directory (file-truename "~/notes/org-roam/"))
+(setq org-roam-db-autosync-mode t)
+(setq org-roam-complete-everywhere t)
+
+(define-key org-mode-map (kbd "M-RET") #'completion-at-point)
+
+(global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
+(global-set-key (kbd "C-c n f") #'org-roam-node-find)
+(global-set-key (kbd "C-c n i") #'org-roam-node-insert)
+
+(use-package org-roam-ui
+  :ensure t
+  :after org-roam)
+
+;; ==================== Org Complete ====================
 
 (defun woman-other-window ()
   "Invoke `woman` and display the result in another window."
@@ -315,50 +361,7 @@
   :bind(("C-h f" . #'helpful-callable)
         ("C-h v" . #'helpful-variable)
         ("C-h k" . #'helpful-key)
-        ("C-h x" . #'helpful-command)))
-
-(use-package go-mode
-  :ensure t
-  :mode "\\.go\\'")
-
-(use-package web-mode
-  :ensure t
-  :mode "\\.html?\\'"
-  :hook(css-mode)
-  :custom
-  (web-mode-css-indent-offset 4)
-  (web-mode-code-indent-offset 4)
-  (web-mode-enable-auto-pairing t)
-  (web-mode-enable-css-colorization t)
-  (web-mode-ac-sources-alist
-   '(("css" . (ac-source-css-property))
-     ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-  :config
-  (setq ac-auto-start 2))
-
-(use-package emmet-mode
-  :ensure t
-  :hook(web-mode))
-
-(use-package typescript-mode
-  :ensure t
-  :mode "\\.ts\\'")
-
-(use-package dumb-jump
-  :ensure t
-  :hook((prog-mode) . dumb-jump-mode))
-
-(use-package nasm-mode
-  :ensure t
-  :mode "\\.nasm\\'")
-
-(remove-hook 'xref-backend-functions #'etags--xref-backend)
-(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
-(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
-
-(global-set-key (kbd "C-,") 'xref-go-back)
-(global-set-key (kbd "C-.") 'xref-find-definitions-other-window)
- 
+        ("C-h x" . #'helpful-command))) 
 
 (defun aj/new-line-below-and-move()
   (interactive)
@@ -422,3 +425,61 @@
 (global-set-key (kbd "C-S-o") 'aj/new-line-above-and-move)
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
+
+
+;; Grep default command
+(setq grep-command "grep -nH --color=auto -i  *")
+(put 'downcase-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)
+
+(setq programming-file "programming.el")
+(when (file-exists-p programming-file)
+  (setq full-filepath (expand-file-name programming-file user-emacs-directory))
+  (load-file full-filepath))
+
+
+
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'"
+  :config
+  (setq tab-width 4))
+
+(use-package web-mode
+  :ensure t
+  :mode "\\.html?\\'"
+  :hook(css-mode)
+  :custom
+  (web-mode-css-indent-offset 4)
+  (web-mode-code-indent-offset 4)
+  (web-mode-enable-auto-pairing t)
+  (web-mode-enable-css-colorization t)
+  (web-mode-ac-sources-alist
+   '(("css" . (ac-source-css-property))
+     ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+  :config
+  (setq ac-auto-start 2))
+
+(use-package emmet-mode
+  :ensure t
+  :hook(web-mode))
+
+(use-package typescript-mode
+  :ensure t
+  :mode "\\.ts\\'")
+
+(use-package nasm-mode
+  :ensure t
+  :mode "\\.nasm\\'")
+
+(remove-hook 'xref-backend-functions #'etags--xref-backend)
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+
+
+(use-package dumb-jump
+  :ensure t
+  :hook((prog-mode) . dumb-jump-mode))
+
+(global-set-key (kbd "C-,") 'xref-go-back)
+(global-set-key (kbd "C-.") 'xref-find-definitions-other-window)

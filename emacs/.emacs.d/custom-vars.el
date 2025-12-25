@@ -5,10 +5,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(auto-complete company corfu denote devdocs dumb-jump emmet-mode
-		   glsl-mode go-mode gruvbox-theme helpful hl-todo
-		   magit mood-line move-text multiple-cursors
-		   nasm-mode typescript-mode vertico web-mode))
+   '(company devdocs dumb-jump emmet-mode go-mode gruvbox-theme helpful
+	     hl-todo magit mood-line move-text multiple-cursors
+	     nasm-mode org-roam org-roam-ui typescript-mode vertico
+	     web-mode))
  '(warning-suppress-log-types '((treesit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

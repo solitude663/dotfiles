@@ -1,8 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
-if pgrep -x "waybar" > /dev/null
-then
-    pkill waybar
-else
-    waybar &
-fi
+killall -9 waybar
+waybar &
