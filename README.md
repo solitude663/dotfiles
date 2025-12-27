@@ -15,7 +15,11 @@
 # Setting up SSH (why the fuck don't they just give proper instructions???)
 - ssh-keygen -t ed25519 -C "your_email@example.com"
 - eval "$(ssh-agent -s)"
-- sudo pacman -S keychain
+- sudo pacman -S keychain 
 - Add to ~/.bashrc (eval `keychain --eval id_ed25519`)
 - cat ~/.ssh/id_ed25519.pub | wl-copy
 - ssh -T git@github.com
+
+# Setup dark mode
+sudo pacman -Syu gnome-themes-extra adwaita-icon-theme xdg-desktop-portal-gtk qt5ct qt6ct kvantum
+yay -S nwg-look
