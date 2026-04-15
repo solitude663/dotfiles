@@ -2,6 +2,13 @@
 Apps
 ==============================
 Aesprite
+Zen Browser
+Free Download Manager
+Chrome
+Firefox
+Steam
+Heroic Game Launcher
+GNU Stow
 
 ==============================
 Packages
